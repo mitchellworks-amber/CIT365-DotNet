@@ -1,0 +1,6 @@
+C:\Users\metauser\Documents\am_workspace\CIT365-DotNet\ConsoleApplicationMitchell\bin\Debug\ConsoleApplicationMitchell.exe.config
+C:\Users\metauser\Documents\am_workspace\CIT365-DotNet\ConsoleApplicationMitchell\bin\Debug\ConsoleApplicationMitchell.exe
+C:\Users\metauser\Documents\am_workspace\CIT365-DotNet\ConsoleApplicationMitchell\bin\Debug\ConsoleApplicationMitchell.pdb
+C:\Users\metauser\Documents\am_workspace\CIT365-DotNet\ConsoleApplicationMitchell\obj\Debug\ConsoleApplicationMitchell.csprojResolveAssemblyReference.cache
+C:\Users\metauser\Documents\am_workspace\CIT365-DotNet\ConsoleApplicationMitchell\obj\Debug\ConsoleApplicationMitchell.exe
+C:\Users\metauser\Documents\am_workspace\CIT365-DotNet\ConsoleApplicationMitchell\obj\Debug\ConsoleApplicationMitchell.pdb
