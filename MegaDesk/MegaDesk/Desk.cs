@@ -13,21 +13,14 @@ namespace MegaDesk
         laminate,
         pine,
         rosewood,
-        veneer,
+        veneer
     }
 
-    public class Desk
+    class Desk
     {
-        int width;
-        int depth;
-        int drawers;
-        string material;
-        bool oversized = false;
-
-        static bool ValidateInputs()
-        {
-            return true;
-        }
-
+        public int Width { get; set; }
+        public int Depth { get; set; }
+        public int Drawers { get; set; }
+        public string Material { get; set; }
     }
 }
