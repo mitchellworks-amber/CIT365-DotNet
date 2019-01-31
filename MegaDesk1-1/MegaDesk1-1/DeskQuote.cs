@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,19 +7,20 @@ using System.Threading.Tasks;
 
 namespace MegaDesk1_1
 {
-    class DeskQuote
+    public class DeskQuote
     {
         // vars
         #region Object member variables
-        private string CustomerName;
-        private DateTime QuoteDate;
-        private Desk TheDesk = new Desk();
-        private int RushDays;
-        private int QuoteAmount;
+        public string CustomerName;
+        public DateTime QuoteDate = new DateTime();
+        public Desk TheDesk = new Desk();
+        public int RushDays;
+        public int QuoteAmount;
         #endregion
 
         #region Local variables
-        private int SurfaceArea = 0;
+        public int SurfaceArea = 0;
+        public int TotalPrice = 0;
         #endregion
 
         private const int PRICE_BASE = 200;
@@ -28,193 +30,131 @@ namespace MegaDesk1_1
 
 
         // constructor
-        public DeskQuote(int width, int depth, int drawers, string material, int rushDays)
+        public DeskQuote(string name, int width, int depth, int drawers, string material, int rushDays)
         {
+            QuoteDate = DateTime.Now;
+            CustomerName = name;
             TheDesk.Width = width;
             TheDesk.Depth = depth;
             TheDesk.Drawers = drawers;
             TheDesk.Material = material;
-
+            RushDays = rushDays;
             SurfaceArea = TheDesk.Width * TheDesk.Depth;
+
         }
 
         public int CalulateQuote()
         {
-            return PRICE_BASE + DrawerCost() + AddOns();
-        }
-
-        private int DrawerCost()
-        {
-            return TheDesk.Drawers * PRICE_PER_DRAWER;
+            TotalPrice = PRICE_BASE + AddOns();
+            return PRICE_BASE + AddOns();
         }
 
         private int AddOns()
         {
-            // surface area cost, rush order cost
-            return SurfaceArea;
-        }
+            int AddOnCost = 0;
+            int OverCost = 0;
+            int DrawerCost = 0;
 
+            // drawer cost
+            DrawerCost = TheDesk.Drawers * PRICE_PER_DRAWER;
+            AddOnCost += DrawerCost;
 
-        // other methods... needs WORK
-        /*
-        static int GatherInput()
-        {
-            int theNumber = 0;
-            string theString = "";
-            int rushDays = 0;
-
-            //get numerical inputs
-            do
+            // surface area cost
+            if (SurfaceArea > 1000)
             {
-                try
-                {
-                    theNumber = int.Parse(theString);
-
-                    if (theNumber < min || theNumber > max)
-                        throw new Exception(eMsg);
-                }
-                catch (Exception eDeskW)
-                {
-                    //Console.Write(eDeskW.Message);
-                }
+                OverCost = SurfaceArea - 1000;
+                AddOnCost += OverCost;
             }
-            while (theNumber < min || theNumber > max);
 
-            //return theNumber;
-
-            // gather rush input
-            do
+            // set material price
+            switch (TheDesk.Material)
             {
-                Console.WriteLine("\nDo you need your ordere rushed? Please enter a deadline of 3, 5, or 7 days. \nOtherwise please hit ENTER for the standard 14 days.");
-                string rushString = Console.ReadLine();
-                try
-                {
-                    if (rushString == "")
-                    {
-                        rushString = "14";
-                    }
-                    rushDays = int.Parse(rushString);
-                    if (rushDays != 3 && rushDays != 5 && rushDays != 7 && rushDays != 14)
-                        throw new Exception("Please enter either 3, 5, or 7, or hit ENTER\n");
-                }
-                catch (Exception eRush)
-                {
-                    Console.WriteLine(eRush.Message);
-                }
-            }
-            while (rushDays != 3 && rushDays != 5 && rushDays != 7 && rushDays != 14);
-
-            return rushDays;
-
-        }
-
-        static int CalcPrice(int width, int depth, int drawers, string material, int rushDays,)
-        {
-            int surfacePrice;
-            int drawerPrice;
-            int materialPrice;
-            int rushPrice = 0;
-            int basePrice = 200;
-
-            // see if there is an oversize charge
-            surfacePrice = ((width * depth) - 1000);
-            if (surfacePrice < 0)
-                surfacePrice = 0;
-
-            double deskSize = (width * depth);
-
-            // set drawerPrice
-            drawerPrice = (drawers * 50);
-
-            // set materialPrice
-            switch (material)
-            {
-                case "oak":
-                    materialPrice = 200;
+                case "Oak":
+                    AddOnCost += 200;
                     break;
-                case "laminate":
-                    materialPrice = 100;
+                case "Laminate":
+                    AddOnCost += 100;
                     break;
-                case "pine":
-                    materialPrice = 50;
+                case "Pine":
+                    AddOnCost += 50;
                     break;
-                case "rosewood":
-                    materialPrice = 300;
+                case "Rosewood":
+                    AddOnCost += 300;
                     break;
                 default:
-                    materialPrice = 125;
+                    AddOnCost += 125;
                     break;
             }
 
-            // set rushPrice
-            switch (rushDays)
+            // set rush order price
+            switch (RushDays)
             {
                 case 3:
-                    if (deskSize < 1000)
-                        rushPrice = 60;
-                    else if (deskSize > 1000 && deskSize < 2000)
-                        rushPrice = 70;
-                    else if (deskSize >= 2000)
-                        rushPrice = 80;
+                    if (SurfaceArea < 1000)
+                        AddOnCost += 60;
+                    else if (SurfaceArea >= 1000 && SurfaceArea < 2000)
+                        AddOnCost += 70;
+                    else if (SurfaceArea >= 2000)
+                        AddOnCost += 80;
                     break;
                 case 5:
-                    if (deskSize < 1000)
-                        rushPrice = 40;
-                    else if (deskSize > 1000 && deskSize < 2000)
-                        rushPrice = 50;
-                    else if (deskSize >= 2000)
-                        rushPrice = 60;
+                    if (SurfaceArea < 1000)
+                        AddOnCost += 40;
+                    else if (SurfaceArea >= 1000 && SurfaceArea < 2000)
+                        AddOnCost += 50;
+                    else if (SurfaceArea >= 2000)
+                        AddOnCost += 60;
                     break;
                 case 7:
-                    if (deskSize < 1000)
-                        rushPrice = 30;
-                    else if (deskSize > 1000 && deskSize < 2000)
-                        rushPrice = 35;
-                    else if (deskSize >= 2000)
-                        rushPrice = 40;
+                    if (SurfaceArea < 1000)
+                        AddOnCost += 30;
+                    else if (SurfaceArea >= 1000 && SurfaceArea < 2000)
+                        AddOnCost += 35;
+                    else if (SurfaceArea >= 2000)
+                        AddOnCost += 40;
                     break;
                 default:
-                    rushPrice = 0;
+                    AddOnCost += 0;
                     break;
 
             }
 
-            // now we can calculate totalPrice
-            int totalPrice = (basePrice + surfacePrice + drawerPrice + materialPrice + rushPrice);
-
-            return totalPrice;
-
+            return AddOnCost;
         }
-        static void DisplaySingleQuote()
+
+        public void WriteQuote()
         {
-            // send this good stuff to the view
+            try
+            {
+                using(StreamWriter writer = new StreamWriter("quotes.csv", true))
+                {
+                    //writer.WriteLine("Order\tName\tWidth\tDepth\tDrawers\tMaterial\tProduction Days\tTotal");
+                    writer.WriteLine(QuoteDate + "\t" + CustomerName + "\t" + TheDesk.Width + "\t" + TheDesk.Depth + "\t" + TheDesk.Drawers + "\t" + TheDesk.Material + "\t" + RushDays + "\t" + TotalPrice);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occurred: '{0}'", e);
+            }
         }
-        static void WriteQuote(int width, int length, int surfacePrice, int drawers, int drawerPrice, string material, int materialPrice, int rushDays, int rushPrice, int totalPrice)
+        public void ReadQuotes()
         {
-            StreamWriter writer;
-            writer = new StreamWriter(@"C:\Users\mitchellworks\Documents\am_workspace\BYUI\net-stuff\NET-stuff\Mega Escritorio\MegaE-OrderFile.txt");
-
-            writer.WriteLine("{");
-            writer.WriteLine("\t\"order\":");
-            writer.WriteLine("\t{");
-            writer.WriteLine("\t\t\"width\":\"" + width + " in\"");
-            writer.WriteLine("\t\t\"length\":\"" + length + " in\"");
-            writer.WriteLine("\t\t\"extraSurfacePrice\":\"$" + surfacePrice + "\"\n");
-
-            writer.WriteLine("\t\t\"numberOfDrawers\":\"" + drawers + "\"");
-            writer.WriteLine("\t\t\"drawerPrice\":\"$" + drawerPrice + "\"\n");
-
-            writer.WriteLine("\t\t\"material\":\"" + material + "\"");
-            writer.WriteLine("\t\t\"materialPrice\":\"$" + materialPrice + "\"\n");
-
-            writer.WriteLine("\t\t\"rushDeadline\":" + rushDays + "days\"");
-            writer.WriteLine("\t\t\"rushPrice\":\"$" + rushPrice + "\"\n");
-
-            writer.WriteLine("\t\t\"totalPrice\":\"$" + totalPrice + "\"");
-            writer.WriteLine("\t}");
-            writer.WriteLine("}");
-            writer.Close();
+            try
+            {
+                // Read and show each line from the file.
+                string line = "";
+                using (StreamReader sr = new StreamReader("quotes.csv"))
+                {
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        // stuff here like Console.WriteLine(line);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occurred: '{0}'", e);
+            }
         }
-*/
     }
 }

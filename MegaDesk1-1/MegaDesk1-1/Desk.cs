@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 namespace MegaDesk1_1
 {
     //set up the possible wood types
-    enum WoodMaterial
+    public enum WoodMaterial
     {
-        oak,
-        laminate,
-        pine,
-        rosewood,
-        veneer
+        Laminate,
+        Oak,
+        Pine,
+        Rosewood,
+        Veneer
     }
 
-    class Desk
+    public class Desk
     {
         public int Width { get; set; }
         public int Depth { get; set; }

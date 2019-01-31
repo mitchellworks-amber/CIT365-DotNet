@@ -83,6 +83,12 @@
     <EmbeddedResource Include="AddQuoteView.resx">
       <DependentUpon>AddQuoteView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AllQuotesView.resx">
+      <DependentUpon>AllQuotesView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DisplayQuoteView.resx">
+      <DependentUpon>DisplayQuoteView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainMenuView.resx">
       <DependentUpon>MainMenuView.cs</DependentUpon>
     </EmbeddedResource>
@@ -95,6 +101,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SearchQuotesView.resx">
+      <DependentUpon>SearchQuotesView.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

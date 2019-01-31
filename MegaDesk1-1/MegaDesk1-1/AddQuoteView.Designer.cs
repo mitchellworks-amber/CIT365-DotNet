@@ -202,12 +202,7 @@
             this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox4.FormattingEnabled = true;
             this.comboBox4.Items.AddRange(new object[] {
-            "-",
-            "Laminate",
-            "Oak",
-            "Rosewood",
-            "Veneer",
-            "Pine"});
+            "-"});
             this.comboBox4.Location = new System.Drawing.Point(373, 230);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(121, 21);
@@ -251,6 +246,7 @@
             this.Controls.Add(this.label1);
             this.Name = "AddQuoteView";
             this.Text = "New Desk Quote";
+            this.Load += new System.EventHandler(this.AddQuoteView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
