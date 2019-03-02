@@ -18,6 +18,8 @@
         &nbsp;&nbsp;
         Search: <input type="text" asp-for="SearchString" />
         <input type="submit" value="Go!" />
+        <br />
+        <a asp-page="./Index">Back to full List</a>
     </p>
 </form>
 
@@ -28,7 +30,10 @@
                 @Html.DisplayNameFor(model => model.Scripture[0].Set)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Scripture[0].Book)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.BookSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Scripture[0].Book)
+                </a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Scripture[0].Chapter)
@@ -37,7 +42,10 @@
                 @Html.DisplayNameFor(model => model.Scripture[0].Verse)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Scripture[0].DateAdded)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Scripture[0].DateAdded)
+                </a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Scripture[0].Notes)
@@ -46,32 +54,53 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Scripture) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Set)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Book)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Chapter)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Verse)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateAdded)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Scripture)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Set)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Book)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Chapter)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Verse)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateAdded)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Notes)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.Scripture.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Scripture.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Scripture.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Scripture.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
